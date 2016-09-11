@@ -33,6 +33,7 @@
     "stanza.io": "^8.0.2",
     "stream": "0.0.2",
     "stream-browserify": "^2.0.1",
+    "strophe.js": "^1.2.7",
     "util": "^0.10.3",
     "vm": "^0.1.0"
   },

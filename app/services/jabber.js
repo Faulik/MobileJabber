@@ -18,11 +18,25 @@ import { store } from '../../index.android';
 // });
 
 import XMPP from 'stanza.io';
-
+import 'strophe.js';
+// connection.connect(this.jid, this.password, function (status, errorCode) {
+//   // console.log('Connection status', status, errorCode);
+//
+//   if (status === Strophe.Status.CONNECTED || status === Strophe.Status.ATTACHED) {
+//     Actions.connection($this.connection);
+//   } else if (status === Strophe.Status.DISCONNECTED) {
+//     Actions.connectionLost();
+//   } else if (status === Strophe.Status.AUTHFAIL) {
+//     Actions.loginFailed();
+//   } else if (status === Strophe.Status.ERROR) {
+//     console.log('Error', errorCode);
+//   }
+// });
 // const client = XMPP.createClient({
 //   jid: 'faul@aionlegend.ru',
 //   password: 'nniikk',
-//   timeout: 10,
+//   timeout: 40,
+//   sasl: 'digest-md5',
 //   transport: 'bosh',
 //   // transport: 'websocket',
 //   boshURL: 'https://aionlegend.ru',
@@ -36,17 +50,34 @@ import XMPP from 'stanza.io';
 //   // (or `boshURL` if using 'bosh' as the transport)
 // });
 
-var client = XMPP.createClient({
-    jid: 'anon@anon.lance.im',
-    transport: 'bosh',
-    boshURL: 'http://lance.im/http-bind'
-});
+// const client = XMPP.createClient({
+//     jid: 'faul@aionlegend.ru',
+//     password: 'nniikk',
+//     transport: 'bosh',
+//     boshURL: 'https://zeonfed.org/http-bind'
+// });
 
 // var client = XMPP.createClient({
 //   jid: 'anon@anon.lance.im',
 //   transport: 'websocket',
 //   wsURL: 'wss://lance.im/xmpp-websocket'
 // });
+
+const connection = new Strophe.Connection('https://zeonfed.org/http-bind');
+
+connection.connect(this.jid, this.password, function (status, errorCode) {
+  // console.log('Connection status', status, errorCode);
+
+  if (status === Strophe.Status.CONNECTED || status === Strophe.Status.ATTACHED) {
+    console.log('connected');
+  } else if (status === Strophe.Status.DISCONNECTED) {
+    console.log('disconnected');
+  } else if (status === Strophe.Status.AUTHFAIL) {
+    console.log('failed');
+  } else if (status === Strophe.Status.ERROR) {
+    console.log('Error', errorCode);
+  }
+});
 
 client.on('session:started', () => {
   console.log('connected')
@@ -106,7 +137,6 @@ client.on('disconnected', (msg) => {
 });
 
 client.on('*', (msg, data) => {
-  console.log('raw:incoming')
   console.log(msg)
   console.log(data)
 });
